@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Détails de l'employé</title>
+</head>
+<body>
+<h1>Détails de l'employé</h1>
+<table>
+  <tr>
+    <th>Nom</th>
+    <th>Prénoms</th>
+    <th>Date de naissance</th>
+  </tr>
+  <tr>
+    <td th:text="${employee.nom}"></td>
+    <td th:text="${employee.prenoms}"></td>
+    <td th:text="${employee.dateNaissance}"></td>
+  </tr>
+</table>
+</body>
+</html>

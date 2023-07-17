@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un employé</title>
+    <style>
+        /* Styles pour le formulaire */
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="date"] {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    padding: 8px 12px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+    </style>
+
+</head>
+<body>
+<h2>Ajouter d'employe</h2>
+
+<form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post">
+    <label for="nom">Nom:</label>
+    <input type="text" id="nom" th:field="*{nom}"/><br/>
+
+    <label for="prenoms">Prénoms:</label>
+    <input type="text" id="prenoms" th:field="*{prenoms}"/><br/>
+
+    <label for="dateNaissance">Date de naissance:</label>
+    <input type="date" id="dateNaissance" th:field="*{dateNaissance}"/><br/>
+
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image"/><br/>
+
+    <button type="submit">Ajouter</button>
+</form>
+</body>
+</html>

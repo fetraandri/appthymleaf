@@ -1,8 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
-import org.thymeleaf.expression.Dates;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,10 +11,18 @@ import org.thymeleaf.expression.Dates;
 @Getter
 @Setter
 @ToString
+
 public class Employee {
-    private String firstName;
-    private String lastName;
-    private Dates dateOfBirth;
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id ;
+
+        private String nom;
+        private String prenoms;
+        private LocalDate dateNaissance;
+        @Column(columnDefinition ="text")
+        private String image;
 
 }
 
