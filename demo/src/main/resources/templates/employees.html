@@ -18,6 +18,15 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .employee-link {
+            text-decoration: underline;
+            color: blue;
+            cursor: pointer;
+        }
+         h1 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -28,11 +37,15 @@
         <th>Nom</th>
         <th>Prénoms</th>
         <th>Date de naissance</th>
+        <th>Actions</th>
     </tr>
     <tr th:each="employee : ${employees}">
         <td th:text="${employee.nom}"></td>
         <td th:text="${employee.prenoms}"></td>
         <td th:text="${employee.dateNaissance}"></td>
+        <td>
+            <a th:href="@{'/employee/' + ${employee.id}}" class="employee-link">Détails</a>
+        </td>
     </tr>
 </table>
 </body>

@@ -21,6 +21,7 @@ public class Employee {
         private String nom;
         private String prenoms;
         private LocalDate dateNaissance;
+
         @Column(columnDefinition ="text")
         private String image;
 

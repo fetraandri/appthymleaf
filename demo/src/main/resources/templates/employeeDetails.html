@@ -2,21 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Détails de l'employé</title>
+  <title>Fiche Employé</title>
+  <style>
+        .employee-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .employee-image {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+         h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>Détails de l'employé</h1>
-<table>
-  <tr>
-    <th>Nom</th>
-    <th>Prénoms</th>
-    <th>Date de naissance</th>
-  </tr>
-  <tr>
-    <td th:text="${employee.nom}"></td>
-    <td th:text="${employee.prenoms}"></td>
-    <td th:text="${employee.dateNaissance}"></td>
-  </tr>
-</table>
+<h1>Fiche Employé</h1>
+
+<div class="employee-details">
+  <h2 th:text="${employee.nom + ' ' + employee.prenoms}"></h2>
+  <p>Date de naissance: <span th:text="${employee.dateNaissance}"></span></p>
+  <div class="employee-image">
+    <img th:if="${employee.image}" th:src="@{|/images/${employee.image}|}" alt="Photo d'identité"/>
+    <span th:unless="${employee.image}">Aucune image</span>
+  </div>
+
+
+
+</div>
+
 </body>
 </html>

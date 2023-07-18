@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -43,10 +44,12 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
-
-
-
-
+    @GetMapping("/employee/{id}")
+    public String getEmployeeDetails(@PathVariable Long id, Map<String, Object> model) {
+        Employee employee = employeeService.getEmployeeById(id);
+        model.put("employee", employee);
+        return "employeeDetails";
+    }
 
 
 }
