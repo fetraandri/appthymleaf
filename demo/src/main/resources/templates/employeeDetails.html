@@ -3,38 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <title>Fiche Employé</title>
-  <style>
-        .employee-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
+  <link rel="stylesheet" type="text/css" th:href="@{/css/employeeDetails.css}"/>
 
-        .employee-image {
-            width: 200px;
-            height: 200px;
-            margin-bottom: 10px;
-        }
-         h1 {
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
 <h1>Fiche Employé</h1>
 
 <div class="employee-details">
+  <!-- Affichage des informations de l'employé -->
   <h2 th:text="${employee.nom + ' ' + employee.prenoms}"></h2>
   <p>Date de naissance: <span th:text="${employee.dateNaissance}"></span></p>
+  <!-- ... -->
+
   <div class="employee-image">
-    <img th:if="${employee.image}" th:src="@{|/images/${employee.image}|}" alt="Photo d'identité"/>
-    <span th:unless="${employee.image}">Aucune image</span>
+    <!-- Utilisation de Thymeleaf pour construire le chemin de l'image -->
+
+    <img th:if="${employee.imageData}" th:src="@{/employeeImage/{id}(id=${employee.id})}" alt="Photo d'identité"/>
+    <span th:unless="${employee.imageData}">Aucune image</span>
   </div>
 
+  <!-- ... -->
 
 
+  <!-- Bouton "Modifier" -->
+  <button class="edit-button" onclick="toggleEdit()">Modifier</button>
+
+  <!-- Formulaire d'édition (initiallement masqué) -->
+  <form id="edit-form" th:object="${employee}" th:action="@{/updateEmployee}" method="post" style="display: none;">
+    <h2>
+      <input type="text" th:field="*{nom}" placeholder="Nom" required/>
+      <input type="text" th:field="*{prenoms}" placeholder="Prénoms" required/>
+    </h2>
+    <p>Date de naissance: <input type="date" th:field="*{dateNaissance}" required/></p> <!-- Champ éditable pour la date de naissance -->
+
+    <div class="employee-image">
+      <img class="employee-image" th:src="${'data:image/png;base64,' + employee.image}" alt="Photo de l'employé">
+    </div>
+
+    <button type="submit">Enregistrer</button> <!-- Bouton pour soumettre le formulaire -->
+  </form>
 </div>
+
+<script>
+    function toggleEdit() {
+        var editForm = document.getElementById("edit-form");
+        if (editForm.style.display === "none") {
+            editForm.style.display = "block";
+        } else {
+            editForm.style.display = "none";
+        }
+    }
+</script>
 
 </body>
 </html>

@@ -21,9 +21,15 @@ public class Employee {
         private String nom;
         private String prenoms;
         private LocalDate dateNaissance;
+        private String image ;
 
-        @Column(columnDefinition ="text")
-        private String image;
+        @Column(columnDefinition = "text")
+        private String imageFileName; // Nom du fichier de l'image
+
+        @Lob
+        private byte[] imageData;
+
+
 
 }
 

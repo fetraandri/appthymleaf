@@ -3,12 +3,15 @@ package com.example.demo.controller;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,16 +42,52 @@ public class EmployeeController {
 
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@ModelAttribute("newEmployee") Employee employee) {
+    public String addEmployee(
+            @ModelAttribute("newEmployee") Employee employee,
+            @RequestParam("imageFile") MultipartFile imageFile
+    ) {
+        // Gérer le fichier image envoyé par l'utilisateur
+        if (!imageFile.isEmpty()) {
+            try {
+                // Récupérer le nom du fichier d'image et le stocker dans l'objet Employee
+                String fileName = imageFile.getOriginalFilename();
+                employee.setImageFileName(fileName);
+
+                // Convertir les données binaires de l'image en byte[]
+                byte[] imageData = imageFile.getBytes();
+
+                // Sauvegarder les données binaires de l'image dans l'objet Employee
+                employee.setImageData(imageData);
+            } catch (IOException e) {
+                // Gérer l'exception en cas d'erreur lors de la sauvegarde de l'image
+                e.printStackTrace();
+                // Vous pouvez également retourner un message d'erreur à l'utilisateur ici
+            }
+        }
+
+        // Sauvegarder l'employé dans la base de données
         employeeService.addEmployee(employee);
         return "redirect:/employees";
     }
+
+
 
     @GetMapping("/employee/{id}")
     public String getEmployeeDetails(@PathVariable Long id, Map<String, Object> model) {
         Employee employee = employeeService.getEmployeeById(id);
         model.put("employee", employee);
         return "employeeDetails";
+    }
+
+    @GetMapping("/employeeImage/{id}")
+    public ResponseEntity<byte[]> getEmployeeImage(@PathVariable Long id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        if (employee != null && employee.getImageData() != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG); // Changez en MediaType.IMAGE_JPEG si nécessaire
+            return new ResponseEntity<>(employee.getImageData(), headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
