@@ -28,4 +28,11 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElse(null);
     }
 
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+
+
+
 }

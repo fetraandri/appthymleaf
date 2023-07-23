@@ -11,6 +11,9 @@
 <h2>Ajout d'employé</h2>
 
 <form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" th:field="*{id}"/>
+
     <label for="nom">Nom:</label>
     <input type="text" id="nom" th:field="*{nom}" required/><br/>
 
@@ -20,9 +23,57 @@
     <label for="dateNaissance">Date de naissance:</label>
     <input type="date" id="dateNaissance" th:field="*{dateNaissance}" required/><br/>
 
+    <!-- ... (autres éléments inchangés) ... -->
+
+    <label for="sexe">Sexe:</label>
+    <input type="text" id="sexe" th:field="*{sexe}" required/><br/>
+
+    <label for="telephones">Téléphones:</label>
+    <input type="text" id="telephones" th:field="*{telephones}" required/><br/>
+
+    <label for="adresse">Adresse:</label>
+    <input type="text" id="adresse" th:field="*{adresse}" required/><br/>
+
+    <label for="emailPerso">Email personnel:</label>
+    <input type="email" id="emailPerso" th:field="*{emailPerso}" required/><br/>
+
+    <label for="emailPro">Email professionnel:</label>
+    <input type="email" id="emailPro" th:field="*{emailPro}" required/><br/>
+
+    <label for="cinNumero">Numéro CIN:</label>
+    <input type="text" id="cinNumero" th:field="*{cinNumero}" required/><br/>
+
+    <label for="cinDateDelivrance">Date de délivrance CIN:</label>
+    <input type="date" id="cinDateDelivrance" th:field="*{cinDateDelivrance}" required/><br/>
+
+    <label for="cinLieuDelivrance">Lieu de délivrance CIN:</label>
+    <input type="text" id="cinLieuDelivrance" th:field="*{cinLieuDelivrance}" required/><br/>
+
+    <label for="fonction">Fonction:</label>
+    <input type="text" id="fonction" th:field="*{fonction}" required/><br/>
+
+    <label for="nombreEnfants">Nombre d'enfants à charge:</label>
+    <input type="number" id="nombreEnfants" th:field="*{nombreEnfants}" required/><br/>
+
+    <label for="dateEmbauche">Date d'embauche:</label>
+    <input type="date" id="dateEmbauche" th:field="*{dateEmbauche}" required/><br/>
+
+    <label for="dateDepart">Date de départ (si applicable):</label>
+    <input type="date" id="dateDepart" th:field="*{dateDepart}"/><br/>
+
+    <label for="categorieSocioProfessionnelle">Catégorie socio-professionnelle:</label>
+    <input type="text" id="categorieSocioProfessionnelle" th:field="*{categorieSocioProfessionnelle}" required/><br/>
+
+    <label for="numeroCnaps">Numéro CNAPS:</label>
+    <input type="text" id="numeroCnaps" th:field="*{numeroCnaps}" required/><br/>
+
+    <!-- ... (autres éléments inchangés) ... -->
+
+
+
+
     <label for="imageFile">Image (Taille maximale: 10 Mo) :</label>
     <input type="file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />
-
 
 
 

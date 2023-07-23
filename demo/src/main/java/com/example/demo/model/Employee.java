@@ -16,12 +16,28 @@ public class Employee {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id ;
+        private Long id;
 
         private String nom;
         private String prenoms;
+        private String sexe;
         private LocalDate dateNaissance;
-        private String image ;
+        private String image;
+        private String adresse;
+        private String emailPerso;
+        private String emailPro;
+        private String cinNumero;
+
+        @Column(columnDefinition = "date")
+        private String cinDateDelivrance;
+
+        private String cinLieuDelivrance;
+        private String fonction;
+        private int nombreEnfants;
+        private LocalDate dateEmbauche;
+        private LocalDate dateDepart;
+        private String categorieSocioProfessionnelle;
+        private String numeroCnaps;
 
         @Column(columnDefinition = "text")
         private String imageFileName; // Nom du fichier de l'image
@@ -29,7 +45,9 @@ public class Employee {
         @Lob
         private byte[] imageData;
 
+        private int telephones;
 
 
+
+        // Autres attributs, constructeurs, getters, setters, etc.
 }
-

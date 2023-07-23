@@ -46,6 +46,8 @@ public class EmployeeController {
             @ModelAttribute("newEmployee") Employee employee,
             @RequestParam("imageFile") MultipartFile imageFile
     ) {
+
+
         // Gérer le fichier image envoyé par l'utilisateur
         if (!imageFile.isEmpty()) {
             try {
@@ -89,6 +91,53 @@ public class EmployeeController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // ...
+
+    @PostMapping("/updateEmployee")
+    public String updateEmployee(@ModelAttribute("employee") Employee updatedEmployee,
+                                 @RequestParam("imageFile") MultipartFile imageFile) {
+        Employee existingEmployee = employeeService.getEmployeeById(updatedEmployee.getId());
+        if (existingEmployee == null) {
+            // Gérer le cas où l'employé n'existe pas
+            return "redirect:/employees";
+        }
+
+        // Mettre à jour les attributs de l'employé existant
+        existingEmployee.setNom(updatedEmployee.getNom());
+        existingEmployee.setPrenoms(updatedEmployee.getPrenoms());
+        existingEmployee.setDateNaissance(updatedEmployee.getDateNaissance());
+
+        // Gérer le fichier image envoyé par l'utilisateur s'il y en a un
+        if (!imageFile.isEmpty()) {
+            try {
+                // Récupérer le nom du fichier d'image et le stocker dans l'objet Employee
+                String fileName = imageFile.getOriginalFilename();
+                existingEmployee.setImageFileName(fileName);
+
+                // Convertir les données binaires de l'image en byte[]
+                byte[] imageData = imageFile.getBytes();
+
+                // Sauvegarder les données binaires de l'image dans l'objet Employee
+                existingEmployee.setImageData(imageData);
+            } catch (IOException e) {
+                // Gérer l'exception en cas d'erreur lors de la sauvegarde de l'image
+                e.printStackTrace();
+                // Vous pouvez également retourner un message d'erreur à l'utilisateur ici
+            }
+        }
+
+        // Mettre à jour l'employé dans la base de données
+        employeeService.updateEmployee(existingEmployee);
+        return "redirect:/employee/" + existingEmployee.getId();
+    }
+
+
+
+
+
+
+
 
 
 }

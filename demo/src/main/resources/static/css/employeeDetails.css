@@ -92,3 +92,16 @@
         button[type="submit"]:hover {
             background-color: #2ca580;
         }
+
+
+        .employee-details p {
+            font-weight: bold;
+            margin-bottom: 5px;
+                }
+
+/* Cibler les balises <span> qui contiennent les valeurs des champs */
+        .employee-details span {
+            font-weight: normal; /* Annule le style de mise en gras */
+        }
+
+

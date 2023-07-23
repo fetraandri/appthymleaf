@@ -13,32 +13,71 @@
   <!-- Affichage des informations de l'employé -->
   <h2 th:text="${employee.nom + ' ' + employee.prenoms}"></h2>
   <p>Date de naissance: <span th:text="${employee.dateNaissance}"></span></p>
-  <!-- ... -->
 
   <div class="employee-image">
     <!-- Utilisation de Thymeleaf pour construire le chemin de l'image -->
-
     <img th:if="${employee.imageData}" th:src="@{/employeeImage/{id}(id=${employee.id})}" alt="Photo d'identité"/>
     <span th:unless="${employee.imageData}">Aucune image</span>
+
   </div>
 
-  <!-- ... -->
+  <p>Sexe: <span th:text="${employee.sexe}"></span></p>
+  <p>Téléphones: <span th:text="${employee.telephones}"></span></p>
+  <p>Adresse: <span th:text="${employee.adresse}"></span></p>
+  <p>Email personnel: <span th:text="${employee.emailPerso}"></span></p>
+  <p>Email professionnel: <span th:text="${employee.emailPro}"></span></p>
+  <p>Numéro CIN: <span th:text="${employee.cinNumero}"></span></p>
+  <p>Date de délivrance CIN: <span th:text="${employee.cinDateDelivrance}"></span></p>
+  <p>Lieu de délivrance CIN: <span th:text="${employee.cinLieuDelivrance}"></span></p>
+  <p>Fonction: <span th:text="${employee.fonction}"></span></p>
+  <p>Nombre d'enfants à charge: <span th:text="${employee.nombreEnfants}"></span></p>
+  <p>Date d'embauche: <span th:text="${employee.dateEmbauche}"></span></p>
+  <p>Date de départ: <span th:text="${employee.dateDepart}"></span></p>
+  <p>Catégorie socio-professionnelle: <span th:text="${employee.categorieSocioProfessionnelle}"></span></p>
+  <p>Numéro CNAPS: <span th:text="${employee.numeroCnaps}"></span></p>
+
+  <!-- ... (autres éléments inchangés) ... -->
+
 
 
   <!-- Bouton "Modifier" -->
   <button class="edit-button" onclick="toggleEdit()">Modifier</button>
 
   <!-- Formulaire d'édition (initiallement masqué) -->
-  <form id="edit-form" th:object="${employee}" th:action="@{/updateEmployee}" method="post" style="display: none;">
+  <form id="edit-form" th:object="${employee}" th:action="@{/updateEmployee}" method="post" enctype="multipart/form-data" style="display: none;">
+    <input type="hidden" th:field="*{id}"/>
     <h2>
       <input type="text" th:field="*{nom}" placeholder="Nom" required/>
       <input type="text" th:field="*{prenoms}" placeholder="Prénoms" required/>
     </h2>
     <p>Date de naissance: <input type="date" th:field="*{dateNaissance}" required/></p> <!-- Champ éditable pour la date de naissance -->
 
+    <p><strong>Sexe:</strong> <input type="text" th:field="*{sexe}" required/></p>
+    <p><strong>Téléphones:</strong> <input type="text" th:field="*{telephones}" required/></p>
+    <p><strong>Adresse:</strong> <input type="text" th:field="*{adresse}" required/></p>
+    <p><strong>Email personnel:</strong> <input type="email" th:field="*{emailPerso}" required/></p>
+    <p><strong>Email professionnel:</strong> <input type="email" th:field="*{emailPro}" required/></p>
+    <p><strong>Numéro CIN:</strong> <input type="text" th:field="*{cinNumero}" required/></p>
+    <p><strong>Date de délivrance CIN:</strong> <input type="date" th:field="*{cinDateDelivrance}" required/></p>
+    <p><strong>Lieu de délivrance CIN:</strong> <input type="text" th:field="*{cinLieuDelivrance}" required/></p>
+    <p><strong>Fonction:</strong> <input type="text" th:field="*{fonction}" required/></p>
+    <p><strong>Nombre d'enfants à charge:</strong> <input type="number" th:field="*{nombreEnfants}" required/></p>
+    <p><strong>Date d'embauche:</strong> <input type="date" th:field="*{dateEmbauche}" required/></p>
+    <p><strong>Date de départ:</strong> <input type="date" th:field="*{dateDepart}"/></p>
+    <p><strong>Catégorie socio-professionnelle:</strong> <input type="text" th:field="*{categorieSocioProfessionnelle}" required/></p>
+    <p><strong>Numéro CNAPS:</strong> <input type="text" th:field="*{numeroCnaps}" required/></p>
+
+
+
+    <label for="imageFile">Nouvelle image (Taille maximale: 10 Mo) :</label>
+    <input type="file" id="imageFile" name="imageFile" accept=".jpg,.png,.jpeg" />
+
+    <!-- Affichage de l'image existante -->
     <div class="employee-image">
-      <img class="employee-image" th:src="${'data:image/png;base64,' + employee.image}" alt="Photo de l'employé">
+      <img th:if="${employee.imageData}" th:src="@{/employeeImage/{id}(id=${employee.id})}" alt="Photo d'identité"/>
+      <span th:unless="${employee.imageData}">Aucune image</span>
     </div>
+
 
     <button type="submit">Enregistrer</button> <!-- Bouton pour soumettre le formulaire -->
   </form>
@@ -54,6 +93,8 @@
         }
     }
 </script>
+
+
 
 </body>
 </html>
