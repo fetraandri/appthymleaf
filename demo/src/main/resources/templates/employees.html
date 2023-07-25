@@ -10,14 +10,11 @@
 <body>
 <h1>Liste des employés</h1>
 
-
-
-
 <table>
     <tr>
-        <th>Nom</th>
-        <th>Prénoms</th>
-        <th>Date de naissance</th>
+        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=nom|}">Nom</a></th>
+        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=prenoms|}">Prénoms</a></th>
+        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=dateNaissance|}">Date de naissance</a></th>
         <th>Actions</th>
     </tr>
     <tr th:each="employee : ${employees}">
@@ -30,10 +27,6 @@
     </tr>
 </table>
 
-
-
-
-<!-- Le tableau et le contenu restant de la page restent inchangés -->
 <form th:action="@{/employees}" method="get">
     <label>Nom: <input type="text" name="nom" th:value="${nom}" /></label>
     <label>Prénom: <input type="text" name="prenoms" th:value="${prenoms}" /></label>
@@ -46,12 +39,6 @@
     <input type="submit" value="Filtrer" />
 
     <a th:href="@{/employees/export/csv}" class="export-link">Exporter au format CSV</a>
-
-
 </form>
-
-
-
-
 </body>
 </html>

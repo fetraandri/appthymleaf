@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +36,12 @@ public class EmployeeService {
     }
 
 
-    public List<Employee> getAllEmployeesWithFilter(String nom, String prenoms, String sexe, String fonction,
-                                                    LocalDate dateEmbaucheStart, LocalDate dateEmbaucheEnd,
-                                                    LocalDate dateDepartStart, LocalDate dateDepartEnd) {
+    public List<Employee> getAllEmployeesWithFilterAndSort(String nom, String prenoms, String sexe, String fonction,
+                                                           LocalDate dateEmbaucheStart, LocalDate dateEmbaucheEnd,
+                                                           LocalDate dateDepartStart, LocalDate dateDepartEnd,
+                                                           String sortBy, String sortOrder) {
 
         // Filtrer les valeurs de nom, prenoms, sexe et fonction
-
-
         List<Employee> employees;
 
         // Vérifier si au moins un champ de filtrage est rempli
@@ -68,8 +68,6 @@ public class EmployeeService {
                 employees = employees.stream().filter(employee -> employee.getFonction().contains(fonction)).collect(Collectors.toList());
             }
 
-
-
             if (dateEmbaucheStart != null || dateEmbaucheEnd != null) {
                 employees = employees.stream().filter(employee -> {
                     LocalDate dateEmbauche = employee.getDateEmbauche();
@@ -85,12 +83,42 @@ public class EmployeeService {
                             (dateDepartEnd == null || dateDepart.isEqual(dateDepartEnd) || dateDepart.isBefore(dateDepartEnd)));
                 }).collect(Collectors.toList());
             }
-               } else {
+
+        } else {
             // Sinon, récupérer tous les employés de la base de données
             employees = employeeRepository.findAll();
         }
 
+        // Trier les employés en fonction des paramètres de tri
+        Comparator<Employee> comparator = null;
+
+        if ("asc".equalsIgnoreCase(sortOrder)) {
+            // Tri croissant
+            comparator = getComparator(sortBy).reversed();
+        } else {
+            // Tri décroissant
+            comparator = getComparator(sortBy);
+        }
+
+        employees.sort(comparator);
+
         return employees;
+    }
+
+    private Comparator<Employee> getComparator(String sortBy) {
+        switch (sortBy) {
+            case "nom":
+                return Comparator.comparing(Employee::getNom, String.CASE_INSENSITIVE_ORDER);
+            case "prenoms":
+                return Comparator.comparing(Employee::getPrenoms, String.CASE_INSENSITIVE_ORDER);
+            case "sexe":
+                return Comparator.comparing(Employee::getSexe, String.CASE_INSENSITIVE_ORDER);
+            case "dateNaissance":
+                return Comparator.comparing(Employee::getDateNaissance);
+            // Ajoutez d'autres cas pour trier par d'autres attributs si nécessaire
+            default:
+                return Comparator.comparing(Employee::getNom, String.CASE_INSENSITIVE_ORDER);
+        }
     }
 }
 

@@ -31,6 +31,22 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @GetMapping("/filtered-employees")
+    public String getFilteredEmployees(HttpSession session, Map<String, Object> model) {
+        // Récupérer les employés filtrés depuis la session
+        List<Employee> filteredEmployees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+        if (filteredEmployees == null) {
+            // Aucun employé filtré trouvé, rediriger ou gérer le cas où il n'y a pas d'employés filtrés.
+            // Par exemple, rediriger vers une autre page.
+            return "redirect:/employees";
+        }
+
+        // Utiliser les employés filtrés dans le modèle
+        model.put("filteredEmployees", filteredEmployees);
+        return "filtered-employees";
+    }
+
     @GetMapping("/employees")
     public String getAllEmployees(@RequestParam(required = false) String nom,
                                   @RequestParam(required = false) String prenoms,
@@ -40,33 +56,39 @@ public class EmployeeController {
                                   @RequestParam(required = false) LocalDate dateEmbaucheEnd,
                                   @RequestParam(required = false) LocalDate dateDepartStart,
                                   @RequestParam(required = false) LocalDate dateDepartEnd,
+                                  @RequestParam(required = false, defaultValue = "nom") String sortBy,
+                                  @RequestParam(required = false, defaultValue = "asc") String sortOrder,
                                   Map<String, Object> model,
                                   HttpSession session) {
 
         List<Employee> employees;
 
         // Vérifier si au moins un champ de filtrage est rempli
+        // ...
+// Vérifier si au moins un champ de filtrage ou de tri est rempli
         if (nom != null || prenoms != null || sexe != null || fonction != null ||
                 dateEmbaucheStart != null || dateEmbaucheEnd != null ||
-                dateDepartStart != null || dateDepartEnd != null) {
+                dateDepartStart != null || dateDepartEnd != null || !sortBy.equals("nom")) {
+            // Appliquer le filtre et le tri
 
-            // Appliquer le filtre
-            employees = employeeService.getAllEmployeesWithFilter(nom, prenoms, sexe, fonction,
+
+            employees = employeeService.getAllEmployeesWithFilterAndSort(nom, prenoms, sexe, fonction,
                     dateEmbaucheStart, dateEmbaucheEnd,
-                    dateDepartStart, dateDepartEnd);
+                    dateDepartStart, dateDepartEnd,
+                    sortBy, sortOrder);
 
-            // Ajouter les employés filtrés à la session
             session.setAttribute("filteredEmployees", employees);
+
         } else {
-            // Sinon, récupérer tous les employés de la base de données
+            // Sinon, récupérer tous les employés de la base de données sans filtrage ni tri
             employees = employeeService.getAllEmployees();
         }
+// ...
+
 
         model.put("employees", employees);
         return "employees";
     }
-
-
 
 
 
@@ -186,21 +208,7 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/filtered-employees")
-    public String getFilteredEmployees(HttpSession session, Map<String, Object> model) {
-        // Récupérer les employés filtrés depuis la session
-        List<Employee> filteredEmployees = (List<Employee>) session.getAttribute("filteredEmployees");
 
-        if (filteredEmployees == null) {
-            // Aucun employé filtré trouvé, rediriger ou gérer le cas où il n'y a pas d'employés filtrés.
-            // Par exemple, rediriger vers une autre page.
-            return "redirect:/employees";
-        }
-
-        // Utiliser les employés filtrés dans le modèle
-        model.put("filteredEmployees", filteredEmployees);
-        return "filtered-employees";
-    }
 
 
     @GetMapping("/employees/export/csv")
@@ -263,6 +271,5 @@ public class EmployeeController {
             // Gérer les erreurs d'exportation CSV si nécessaire
         }
     }
-
 
 }
