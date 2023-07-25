@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,39 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public String getAllEmployees(Map<String, Object> model) {
-        List<Employee> employees = employeeService.getAllEmployees();
+    public String getAllEmployees(@RequestParam(required = false) String nom,
+                                  @RequestParam(required = false) String prenoms,
+                                  @RequestParam(required = false) String sexe,
+                                  @RequestParam(required = false) String fonction,
+                                  @RequestParam(required = false) LocalDate dateEmbaucheStart,
+                                  @RequestParam(required = false) LocalDate dateEmbaucheEnd,
+                                  @RequestParam(required = false) LocalDate dateDepartStart,
+                                  @RequestParam(required = false) LocalDate dateDepartEnd,
+                                  Map<String, Object> model) {
+
+
+
+        List<Employee> employees;
+
+        // Vérifier si au moins un champ de filtrage est rempli
+        if (nom != null || prenoms != null || sexe != null || fonction != null ||
+                dateEmbaucheStart != null || dateEmbaucheEnd != null ||
+                dateDepartStart != null || dateDepartEnd != null) {
+
+            // Appliquer le filtre
+            employees = employeeService.getAllEmployeesWithFilter(nom, prenoms, sexe, fonction,
+                    dateEmbaucheStart, dateEmbaucheEnd,
+                    dateDepartStart, dateDepartEnd);
+        } else {
+            // Sinon, récupérer tous les employés de la base de données
+            employees = employeeService.getAllEmployees();
+        }
+
         model.put("employees", employees);
         return "employees";
     }
+
+
 
 
     @GetMapping("/addEmployee")
@@ -131,12 +160,6 @@ public class EmployeeController {
         employeeService.updateEmployee(existingEmployee);
         return "redirect:/employee/" + existingEmployee.getId();
     }
-
-
-
-
-
-
 
 
 

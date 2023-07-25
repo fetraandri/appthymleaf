@@ -104,4 +104,27 @@
             font-weight: normal; /* Annule le style de mise en gras */
         }
 
+/* Réinitialisation des styles par défaut pour le menu */
+        .menu {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+/* Style des liens dans le menu */
+        .menu a {
+          display: block;
+          padding: 10px 15px;
+          text-decoration: none;
+          color: #333; /* Couleur du texte */
+          background-color: #f7f7f7; /* Couleur de fond des liens */
+          border-bottom: 1px solid #ddd; /* Ligne de séparation entre les liens */
+          transition: background-color 0.3s ease; /* Transition pour un effet de survol */
+        }
+
+            /* Style des liens au survol */
+            .menu a:hover {
+              background-color: #ddd; /* Couleur de fond au survol */
+            }
+
 

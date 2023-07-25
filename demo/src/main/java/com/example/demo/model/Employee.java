@@ -29,7 +29,7 @@ public class Employee {
         private String cinNumero;
 
         @Column(columnDefinition = "date")
-        private String cinDateDelivrance;
+        private LocalDate cinDateDelivrance;
 
         private String cinLieuDelivrance;
         private String fonction;

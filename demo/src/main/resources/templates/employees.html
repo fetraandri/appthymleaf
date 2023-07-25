@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <title>Liste des employés</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/employees.css}"/>
+    <a href="http://localhost:8080/addEmployee">Ajout d'employe</a>
 
 </head>
 <body>
 <h1>Liste des employés</h1>
+
+<!-- Ajouter le formulaire de filtrage -->
 
 
 
@@ -27,5 +30,38 @@
         </td>
     </tr>
 </table>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Les balises <head> et le contenu restant de la page restent inchangés -->
+</head>
+<body>
+<h1>Liste des employés</h1>
+
+<!-- Le tableau et le contenu restant de la page restent inchangés -->
+
+<form th:action="@{/employees}" method="get">
+    <label>Nom: <input type="text" name="nom" th:value="${nom}" /></label>
+    <label>Prénom: <input type="text" name="prenoms" th:value="${prenoms}" /></label>
+    <label>Sexe: <input type="text" name="sexe" th:value="${sexe}" /></label>
+    <label>Fonction: <input type="text" name="fonction" th:value="${fonction}" /></label>
+    <label>Date d'embauche (début): <input type="date" name="dateEmbaucheStart" th:value="${dateEmbaucheStart}" /></label>
+    <label>Date d'embauche (fin): <input type="date" name="dateEmbaucheEnd" th:value="${dateEmbaucheEnd}" /></label>
+    <label>Date de départ (début): <input type="date" name="dateDepartStart" th:value="${dateDepartStart}" /></label>
+    <label>Date de départ (fin): <input type="date" name="dateDepartEnd" th:value="${dateDepartEnd}" /></label>
+    <input type="submit" value="Filtrer" />
+</form>
+
+
+<!-- Le contenu restant de la page reste inchangé -->
+
+</body>
+</html>
+
+
+<!-- Ajoutez ceci où vous souhaitez permettre à l'utilisateur d'exporter les données -->
+
+
 </body>
 </html>
