@@ -2,6 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,9 +40,8 @@ public class EmployeeController {
                                   @RequestParam(required = false) LocalDate dateEmbaucheEnd,
                                   @RequestParam(required = false) LocalDate dateDepartStart,
                                   @RequestParam(required = false) LocalDate dateDepartEnd,
-                                  Map<String, Object> model) {
-
-
+                                  Map<String, Object> model,
+                                  HttpSession session) {
 
         List<Employee> employees;
 
@@ -51,6 +54,9 @@ public class EmployeeController {
             employees = employeeService.getAllEmployeesWithFilter(nom, prenoms, sexe, fonction,
                     dateEmbaucheStart, dateEmbaucheEnd,
                     dateDepartStart, dateDepartEnd);
+
+            // Ajouter les employés filtrés à la session
+            session.setAttribute("filteredEmployees", employees);
         } else {
             // Sinon, récupérer tous les employés de la base de données
             employees = employeeService.getAllEmployees();
@@ -59,6 +65,7 @@ public class EmployeeController {
         model.put("employees", employees);
         return "employees";
     }
+
 
 
 
@@ -72,9 +79,11 @@ public class EmployeeController {
 
     @PostMapping("/addEmployee")
     public String addEmployee(
+
             @ModelAttribute("newEmployee") Employee employee,
             @RequestParam("imageFile") MultipartFile imageFile
     ) {
+        String[] phoneNumbers = employee.getTelephones().split(",");
 
 
         // Gérer le fichier image envoyé par l'utilisateur
@@ -135,7 +144,22 @@ public class EmployeeController {
         // Mettre à jour les attributs de l'employé existant
         existingEmployee.setNom(updatedEmployee.getNom());
         existingEmployee.setPrenoms(updatedEmployee.getPrenoms());
+        existingEmployee.setSexe(updatedEmployee.getSexe());
         existingEmployee.setDateNaissance(updatedEmployee.getDateNaissance());
+        existingEmployee.setAdresse(updatedEmployee.getAdresse());
+        existingEmployee.setEmailPerso(updatedEmployee.getEmailPerso());
+        existingEmployee.setEmailPro(updatedEmployee.getEmailPro());
+        existingEmployee.setCinNumero(updatedEmployee.getCinNumero());
+        existingEmployee.setCinDateDelivrance(updatedEmployee.getCinDateDelivrance());
+        existingEmployee.setCinLieuDelivrance(updatedEmployee.getCinLieuDelivrance());
+        existingEmployee.setFonction(updatedEmployee.getFonction());
+        existingEmployee.setNombreEnfants(updatedEmployee.getNombreEnfants());
+        existingEmployee.setDateEmbauche(updatedEmployee.getDateEmbauche());
+        existingEmployee.setDateDepart(updatedEmployee.getDateDepart());
+        existingEmployee.setCategorieSocioProfessionnelle(updatedEmployee.getCategorieSocioProfessionnelle());
+        existingEmployee.setNumeroCnaps(updatedEmployee.getNumeroCnaps());
+        existingEmployee.setTelephones(updatedEmployee.getTelephones());
+
 
         // Gérer le fichier image envoyé par l'utilisateur s'il y en a un
         if (!imageFile.isEmpty()) {
@@ -161,6 +185,84 @@ public class EmployeeController {
         return "redirect:/employee/" + existingEmployee.getId();
     }
 
+
+    @GetMapping("/filtered-employees")
+    public String getFilteredEmployees(HttpSession session, Map<String, Object> model) {
+        // Récupérer les employés filtrés depuis la session
+        List<Employee> filteredEmployees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+        if (filteredEmployees == null) {
+            // Aucun employé filtré trouvé, rediriger ou gérer le cas où il n'y a pas d'employés filtrés.
+            // Par exemple, rediriger vers une autre page.
+            return "redirect:/employees";
+        }
+
+        // Utiliser les employés filtrés dans le modèle
+        model.put("filteredEmployees", filteredEmployees);
+        return "filtered-employees";
+    }
+
+
+    @GetMapping("/employees/export/csv")
+    public void exportFilteredEmployeesToCSV(HttpSession session, HttpServletResponse response) {
+        // Récupérer les employés filtrés depuis la session
+        List<Employee> filteredEmployees = (List<Employee>) session.getAttribute("filteredEmployees");
+
+        if (filteredEmployees == null || filteredEmployees.isEmpty()) {
+            // Aucun employé filtré trouvé, rediriger ou gérer le cas où il n'y a pas d'employés filtrés.
+            // Par exemple, rediriger vers une autre page.
+            return;
+        }
+
+        // Nom du fichier CSV et en-têtes des colonnes
+        String fileName = "filtered_employees.csv";
+        String[] headers = {"ID", "Nom", "Prénoms", "Sexe", "Date de naissance", "Image", "Adresse", "Email Perso",
+                "Email Pro", "CIN Numero", "CIN Date Delivrance", "CIN Lieu Delivrance", "Fonction",
+                "Nombre d'enfants", "Date d'embauche", "Date de départ", "Catégorie socio-professionnelle",
+                "Numéro CNAPS", "Nom du fichier de l'image", "Image Data", "Téléphones"};
+
+        try {
+            // Définir le type de contenu de la réponse comme étant un fichier CSV
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+            // Créer un écrivain CSV en utilisant la bibliothèque Apache Commons CSV
+            CSVPrinter csvPrinter = new CSVPrinter(response.getWriter(), CSVFormat.DEFAULT.withHeader(headers));
+
+            // Écrire les données des employés filtrés dans le fichier CSV
+            for (Employee employee : filteredEmployees) {
+                csvPrinter.printRecord(
+                        employee.getId(),
+                        employee.getNom(),
+                        employee.getPrenoms(),
+                        employee.getSexe(),
+                        employee.getDateNaissance(),
+                        employee.getImage(),
+                        employee.getAdresse(),
+                        employee.getEmailPerso(),
+                        employee.getEmailPro(),
+                        employee.getCinNumero(),
+                        employee.getCinDateDelivrance(),
+                        employee.getCinLieuDelivrance(),
+                        employee.getFonction(),
+                        employee.getNombreEnfants(),
+                        employee.getDateEmbauche(),
+                        employee.getDateDepart(),
+                        employee.getCategorieSocioProfessionnelle(),
+                        employee.getNumeroCnaps(),
+                        employee.getImageFileName(),
+                        employee.getImageData(),
+                        employee.getTelephones()
+                );
+            }
+
+            // Flush the writer to ensure all data is written to the response
+            response.getWriter().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Gérer les erreurs d'exportation CSV si nécessaire
+        }
+    }
 
 
 }

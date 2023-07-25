@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Ajouter un employé</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/addEmployee.css}"/>
-    <a href="http://localhost:8080/employees">Liste des employes</a>
 
 
 
 </head>
 <body>
+<a class="arrow-link" href="http://localhost:8080/employees">Liste des employes</a>
+
 <h2>Ajout d'employé</h2>
 
 <form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
@@ -31,7 +32,8 @@
     <input type="text" id="sexe" th:field="*{sexe}" required/><br/>
 
     <label for="telephones">Téléphones:</label>
-    <input type="text" id="telephones" th:field="*{telephones}" required/><br/>
+    <input type="text" id="telephones" th:field="*{telephones}" required/>
+    <small>(Separate multiple phone numbers with a comma ',')</small><br/>
 
     <label for="adresse">Adresse:</label>
     <input type="text" id="adresse" th:field="*{adresse}" required/><br/>
@@ -68,11 +70,6 @@
 
     <label for="numeroCnaps">Numéro CNAPS:</label>
     <input type="text" id="numeroCnaps" th:field="*{numeroCnaps}" required/><br/>
-
-    <!-- ... (autres éléments inchangés) ... -->
-
-
-
 
     <label for="imageFile">Image (Taille maximale: 10 Mo) :</label>
     <input type="file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />

@@ -10,7 +10,6 @@
 <body>
 <h1>Liste des employés</h1>
 
-<!-- Ajouter le formulaire de filtrage -->
 
 
 
@@ -31,16 +30,10 @@
     </tr>
 </table>
 
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- Les balises <head> et le contenu restant de la page restent inchangés -->
-</head>
-<body>
-<h1>Liste des employés</h1>
+
+
 
 <!-- Le tableau et le contenu restant de la page restent inchangés -->
-
 <form th:action="@{/employees}" method="get">
     <label>Nom: <input type="text" name="nom" th:value="${nom}" /></label>
     <label>Prénom: <input type="text" name="prenoms" th:value="${prenoms}" /></label>
@@ -51,16 +44,13 @@
     <label>Date de départ (début): <input type="date" name="dateDepartStart" th:value="${dateDepartStart}" /></label>
     <label>Date de départ (fin): <input type="date" name="dateDepartEnd" th:value="${dateDepartEnd}" /></label>
     <input type="submit" value="Filtrer" />
+
+    <a th:href="@{/employees/export/csv}" class="export-link">Exporter au format CSV</a>
+
+
 </form>
 
 
-<!-- Le contenu restant de la page reste inchangé -->
-
-</body>
-</html>
-
-
-<!-- Ajoutez ceci où vous souhaitez permettre à l'utilisateur d'exporter les données -->
 
 
 </body>

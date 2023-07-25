@@ -1,53 +1,52 @@
-package com.example.demo.model;
+        package com.example.demo.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+        import jakarta.persistence.*;
+        import lombok.*;
 
-import java.time.LocalDate;
+        import java.time.LocalDate;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Getter
-@Setter
-@ToString
+        @AllArgsConstructor
+        @NoArgsConstructor
+        @Entity
+        @Getter
+        @Setter
+        @ToString
 
-public class Employee {
+        public class Employee {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+                @Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                private Long id;
 
-        private String nom;
-        private String prenoms;
-        private String sexe;
-        private LocalDate dateNaissance;
-        private String image;
-        private String adresse;
-        private String emailPerso;
-        private String emailPro;
-        private String cinNumero;
+                private String nom;
+                private String prenoms;
+                private String sexe;
+                private LocalDate dateNaissance;
+                private String image;
+                private String adresse;
+                private String emailPerso;
+                private String emailPro;
+                private String cinNumero;
 
-        @Column(columnDefinition = "date")
-        private LocalDate cinDateDelivrance;
+                @Column(columnDefinition = "date")
+                private LocalDate cinDateDelivrance;
 
-        private String cinLieuDelivrance;
-        private String fonction;
-        private int nombreEnfants;
-        private LocalDate dateEmbauche;
-        private LocalDate dateDepart;
-        private String categorieSocioProfessionnelle;
-        private String numeroCnaps;
+                private String cinLieuDelivrance;
+                private String fonction;
+                private int nombreEnfants;
+                private LocalDate dateEmbauche;
+                private LocalDate dateDepart;
+                private String categorieSocioProfessionnelle;
+                private String numeroCnaps;
 
-        @Column(columnDefinition = "text")
-        private String imageFileName; // Nom du fichier de l'image
+                @Column(columnDefinition = "text")
+                private String imageFileName; // Nom du fichier de l'image
 
-        @Lob
-        private byte[] imageData;
+                @Lob
+                private byte[] imageData;
 
-        private int telephones;
+                private String telephones ;
 
 
 
-        // Autres attributs, constructeurs, getters, setters, etc.
-}
+        }

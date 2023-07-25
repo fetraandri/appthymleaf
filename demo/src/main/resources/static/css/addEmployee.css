@@ -55,3 +55,26 @@
         button[type="submit"]:hover {
             background-color: #e64c2e;
         }
+        /* Styles pour le lien avec la flèche */
+        .arrow-link {
+            display: inline-block;
+            position: relative;
+            padding-right: 20px; /* Espace pour l'icône */
+            color: #ff5733;
+            text-decoration: none;
+        }
+
+        .arrow-link::after {
+            content: "\f054"; /* Code de l'icône "chevron-right" */
+            font-family: "Font Awesome"; /* Assurez-vous que vous avez chargé la police Font Awesome */
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 12px;
+            line-height: 32px;
+        }
+
+        /* Styles pour le bouton Ajouter */
+        button[type="submit"] {
+            /* ... Vos styles existants pour le bouton ... */
+        }

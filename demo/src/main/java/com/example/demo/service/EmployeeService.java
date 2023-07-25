@@ -64,6 +64,12 @@ public class EmployeeService {
                 employees = employees.stream().filter(employee -> employee.getSexe().contains(sexe)).collect(Collectors.toList());
             }
 
+            if (fonction != null) {
+                employees = employees.stream().filter(employee -> employee.getFonction().contains(fonction)).collect(Collectors.toList());
+            }
+
+
+
             if (dateEmbaucheStart != null || dateEmbaucheEnd != null) {
                 employees = employees.stream().filter(employee -> {
                     LocalDate dateEmbauche = employee.getDateEmbauche();
