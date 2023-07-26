@@ -3,80 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajouter un employé</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/addEmployee.css}"/>
-
-
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<a class="arrow-link" href="http://localhost:8080/employees">Liste des employes</a>
+<div class="container mt-5">
+    <a class="arrow-link" href="http://localhost:8080/employees">Liste des employes</a>
 
-<h2>Ajout d'employé</h2>
+    <div class="container mt-5">
+        <h2 class="mt-4">Ajout d'employé</h2>
 
-<form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
 
-    <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{id}"/>
 
-    <label for="nom">Nom:</label>
-    <input type="text" id="nom" th:field="*{nom}" required/><br/>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nom">Nom:</label>
+                    <input type="text" class="form-control" id="nom" th:field="*{nom}" required/>
+                </div>
 
-    <label for="prenoms">Prénoms:</label>
-    <input type="text" id="prenoms" th:field="*{prenoms}" required/><br/>
+                <div class="form-group col-md-6">
+                    <label for="prenoms">Prénoms:</label>
+                    <input type="text" class="form-control" id="prenoms" th:field="*{prenoms}" required/>
+                </div>
+            </div>
 
-    <label for="dateNaissance">Date de naissance:</label>
-    <input type="date" id="dateNaissance" th:field="*{dateNaissance}" required/><br/>
+            <div class="form-group">
+                <label for="dateNaissance">Date de naissance:</label>
+                <input type="date" class="form-control" id="dateNaissance" th:field="*{dateNaissance}" required/>
+            </div>
 
-    <!-- ... (autres éléments inchangés) ... -->
+            <div class="form-group">
+                <label for="sexe">Sexe:</label>
+                <select class="form-control" id="sexe" th:field="*{sexe}" required>
+                    <option value="">Sélectionnez le sexe</option>
+                    <option value="F">Femme</option>
+                    <option value="M">Homme</option>
+                </select>
+            </div>
 
-    <label for="sexe">Sexe:</label>
-    <input type="text" id="sexe" th:field="*{sexe}" required/><br/>
+            <div class="form-group">
+                <label for="telephones">Téléphones:</label>
+                <input type="text" class="form-control" id="telephones" th:field="*{telephones}" required/>
+                <small class="form-text text-muted">(Séparez les numéros de téléphone par une virgule ',')</small>
+            </div>
 
-    <label for="telephones">Téléphones:</label>
-    <input type="text" id="telephones" th:field="*{telephones}" required/>
-    <small>(Separate multiple phone numbers with a comma ',')</small><br/>
+            <div class="form-group">
+                <label for="adresse">Adresse:</label>
+                <input type="text" class="form-control" id="adresse" th:field="*{adresse}" required/>
+            </div>
 
-    <label for="adresse">Adresse:</label>
-    <input type="text" id="adresse" th:field="*{adresse}" required/><br/>
+            <div class="form-group">
+                <label for="emailPerso">Email personnel:</label>
+                <input type="email" class="form-control" id="emailPerso" th:field="*{emailPerso}" required/>
+            </div>
 
-    <label for="emailPerso">Email personnel:</label>
-    <input type="email" id="emailPerso" th:field="*{emailPerso}" required/><br/>
+            <div class="form-group">
+                <label for="emailPro">Email professionnel:</label>
+                <input type="email" class="form-control" id="emailPro" th:field="*{emailPro}" required/>
+            </div>
 
-    <label for="emailPro">Email professionnel:</label>
-    <input type="email" id="emailPro" th:field="*{emailPro}" required/><br/>
+            <div class="form-group">
+                <label for="cinNumero">Numéro CIN:</label>
+                <input type="text" class="form-control" id="cinNumero" th:field="*{cinNumero}" required/>
+            </div>
 
-    <label for="cinNumero">Numéro CIN:</label>
-    <input type="text" id="cinNumero" th:field="*{cinNumero}" required/><br/>
+            <div class="form-group">
+                <label for="cinDateDelivrance">Date de délivrance CIN:</label>
+                <input type="date" class="form-control" id="cinDateDelivrance" th:field="*{cinDateDelivrance}" required/>
+            </div>
 
-    <label for="cinDateDelivrance">Date de délivrance CIN:</label>
-    <input type="date" id="cinDateDelivrance" th:field="*{cinDateDelivrance}" required/><br/>
+            <div class="form-group">
+                <label for="cinLieuDelivrance">Lieu de délivrance CIN:</label>
+                <input type="text" class="form-control" id="cinLieuDelivrance" th:field="*{cinLieuDelivrance}" required/>
+            </div>
 
-    <label for="cinLieuDelivrance">Lieu de délivrance CIN:</label>
-    <input type="text" id="cinLieuDelivrance" th:field="*{cinLieuDelivrance}" required/><br/>
+            <div class="form-group">
+                <label for="fonction">Fonction:</label>
+                <input type="text" class="form-control" id="fonction" th:field="*{fonction}" required/>
+            </div>
 
-    <label for="fonction">Fonction:</label>
-    <input type="text" id="fonction" th:field="*{fonction}" required/><br/>
+            <div class="form-group">
+                <label for="nombreEnfants">Nombre d'enfants à charge:</label>
+                <input type="number" class="form-control" id="nombreEnfants" th:field="*{nombreEnfants}" required/>
+            </div>
 
-    <label for="nombreEnfants">Nombre d'enfants à charge:</label>
-    <input type="number" id="nombreEnfants" th:field="*{nombreEnfants}" required/><br/>
+            <div class="form-group">
+                <label for="dateEmbauche">Date d'embauche:</label>
+                <input type="date" class="form-control" id="dateEmbauche" th:field="*{dateEmbauche}" required/>
+            </div>
 
-    <label for="dateEmbauche">Date d'embauche:</label>
-    <input type="date" id="dateEmbauche" th:field="*{dateEmbauche}" required/><br/>
+            <div class="form-group">
+                <label for="dateDepart">Date de départ (si applicable):</label>
+                <input type="date" class="form-control" id="dateDepart" th:field="*{dateDepart}"/>
+            </div>
 
-    <label for="dateDepart">Date de départ (si applicable):</label>
-    <input type="date" id="dateDepart" th:field="*{dateDepart}"/><br/>
+            <div class="form-group">
+                <label for="categorieSocioProfessionnelle">Catégorie socio-professionnelle:</label>
+                <input type="text" class="form-control" id="categorieSocioProfessionnelle" th:field="*{categorieSocioProfessionnelle}" required/>
+            </div>
 
-    <label for="categorieSocioProfessionnelle">Catégorie socio-professionnelle:</label>
-    <input type="text" id="categorieSocioProfessionnelle" th:field="*{categorieSocioProfessionnelle}" required/><br/>
+            <div class="form-group">
+                <label for="numeroCnaps">Numéro CNAPS:</label>
+                <input type="text" class="form-control" id="numeroCnaps" th:field="*{numeroCnaps}" required/>
+            </div>
 
-    <label for="numeroCnaps">Numéro CNAPS:</label>
-    <input type="text" id="numeroCnaps" th:field="*{numeroCnaps}" required/><br/>
+            <div class="form-group">
+                <label for="imageFile">Image (Taille maximale: 10 Mo) :</label>
+                <input type="file" class="form-control-file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />
+            </div>
 
-    <label for="imageFile">Image (Taille maximale: 10 Mo) :</label>
-    <input type="file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+    </div>
+</div>
 
-
-
-    <button type="submit">Ajouter</button>
-</form>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
