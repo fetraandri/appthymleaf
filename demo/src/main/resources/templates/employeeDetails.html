@@ -3,55 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <title>Fiche Employé</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/employeeDetails.css}"/>
-
-
 </head>
 <body>
-<div class="menu">
-  <a href="http://localhost:8080/addEmployee">Ajout d'employé</a>
-  <a href="http://localhost:8080/employees">Liste des employés</a>
-</div>
-
-
-
-<h1>Fiche Employé</h1>
-
-<div class="employee-details">
-  <!-- Affichage des informations de l'employé -->
-  <h2 th:text="${employee.nom + ' ' + employee.prenoms}"></h2>
-  <p>Date de naissance: <span th:text="${employee.dateNaissance}"></span></p>
-
-  <div class="employee-image">
-    <!-- Utilisation de Thymeleaf pour construire le chemin de l'image -->
-    <img th:if="${employee.imageData}" th:src="@{/employeeImage/{id}(id=${employee.id})}" alt="Photo d'identité"/>
-    <span th:unless="${employee.imageData}">Aucune image</span>
-
+<!-- Bootstrap Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="http://localhost:8080/home">Mon Entreprise</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:8080/addEmployee">Ajout d'employé</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:8080/employees">Liste des employés</a>
+        </li>
+      </ul>
+    </div>
   </div>
+</nav>
 
-  <p>Sexe: <span th:text="${employee.sexe}"></span></p>
-  <p class="lead">Téléphones:</p>
-  <ul class="list-unstyled">
-    <li th:each="telephones : ${employee.telephones}" th:text="${telephones}" class="lead"></li>
-  </ul>
+<div class="container mt-4">
+  <div class="employee-details">
+    <!-- Affichage des informations de l'employé -->
+    <h1 class="mb-4" th:text="${employee.nom + ' ' + employee.prenoms}"></h1>
+    <div class="employee-image mb-3">
+      <!-- Utilisation de Thymeleaf pour construire le chemin de l'image -->
+      <img th:if="${employee.imageData}" th:src="@{/employeeImage/{id}(id=${employee.id})}" alt="Photo d'identité" class="img-fluid rounded-circle">
+      <span th:unless="${employee.imageData}">Aucune image</span>
+    </div>
 
-  <p>Adresse: <span th:text="${employee.adresse}"></span></p>
-  <p>Email personnel: <span th:text="${employee.emailPerso}"></span></p>
-  <p>Email professionnel: <span th:text="${employee.emailPro}"></span></p>
-  <p>Numéro CIN: <span th:text="${employee.cinNumero}"></span></p>
-  <p>Date de délivrance CIN: <span th:text="${employee.cinDateDelivrance}"></span></p>
-  <p>Lieu de délivrance CIN: <span th:text="${employee.cinLieuDelivrance}"></span></p>
-  <p>Fonction: <span th:text="${employee.fonction}"></span></p>
-  <p>Nombre d'enfants à charge: <span th:text="${employee.nombreEnfants}"></span></p>
-  <p>Date d'embauche: <span th:text="${employee.dateEmbauche}"></span></p>
-  <p>Date de départ: <span th:text="${employee.dateDepart}"></span></p>
-  <p>Catégorie socio-professionnelle: <span th:text="${employee.categorieSocioProfessionnelle}"></span></p>
-  <p>Numéro CNAPS: <span th:text="${employee.numeroCnaps}"></span></p>
+    <div class="row">
+      <div class="col-md-6">
+        <p>Date de naissance: <span th:text="${employee.dateNaissance}"></span></p>
+        <p>Sexe: <span th:text="${employee.sexe}"></span></p>
+        <p class="lead">Téléphones:</p>
+        <ul class="list-unstyled">
+          <li th:each="telephones : ${employee.telephones}" th:text="${telephones}" class="lead"></li>
+        </ul>
+        <p>Adresse: <span th:text="${employee.adresse}"></span></p>
+        <p>Email personnel: <span th:text="${employee.emailPerso}"></span></p>
+        <p>Email professionnel: <span th:text="${employee.emailPro}"></span></p>
+        <p>Numéro CIN: <span th:text="${employee.cinNumero}"></span></p>
+      </div>
+      <div class="col-md-6">
+        <p>Date de délivrance CIN: <span th:text="${employee.cinDateDelivrance}"></span></p>
+        <p>Lieu de délivrance CIN: <span th:text="${employee.cinLieuDelivrance}"></span></p>
+        <p>Fonction: <span th:text="${employee.fonction}"></span></p>
+        <p>Nombre d'enfants à charge: <span th:text="${employee.nombreEnfants}"></span></p>
+        <p>Date d'embauche: <span th:text="${employee.dateEmbauche}"></span></p>
+        <p>Date de départ: <span th:text="${employee.dateDepart}"></span></p>
+        <p>Catégorie socio-professionnelle: <span th:text="${employee.categorieSocioProfessionnelle}"></span></p>
+        <p>Numéro CNAPS: <span th:text="${employee.numeroCnaps}"></span></p>
+      </div>
+    </div>
 
-
-
-  <!-- Bouton "Modifier" -->
-  <button class="edit-button" onclick="toggleEdit()">Modifier</button>
+    <!-- Bouton "Modifier" -->
+    <button class="btn btn-primary mt-3" onclick="toggleEdit()">Modifier</button>
 
   <!-- Formulaire d'édition (initiallement masqué) -->
   <form id="edit-form" th:object="${employee}" th:action="@{/updateEmployee}" method="post" enctype="multipart/form-data" style="display: none;">
@@ -92,7 +102,11 @@
     <button type="submit">Enregistrer</button> <!-- Bouton pour soumettre le formulaire -->
   </form>
 </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function toggleEdit() {
         var editForm = document.getElementById("edit-form");

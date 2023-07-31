@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,8 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +81,8 @@ public class EmployeeController {
                     dateDepartStart, dateDepartEnd,
                     sortBy, sortOrder);
 
+
+
             session.setAttribute("filteredEmployees", employees);
 
         } else {
@@ -84,8 +90,6 @@ public class EmployeeController {
             employees = employeeService.getAllEmployees();
         }
 // ...
-
-
         model.put("employees", employees);
         return "employees";
     }
@@ -104,12 +108,20 @@ public class EmployeeController {
     public String addEmployee(
 
             @ModelAttribute("newEmployee") Employee employee,
-            @RequestParam("imageFile") MultipartFile imageFile
+            @RequestParam("imageFile") MultipartFile imageFile,
+            Map<String, Object> model
+
     ) {
 
-// Maintenant, vous pouvez diviser les numéros de téléphone en utilisant la méthode split sur la chaîne
-
-// Ou, si vous voulez les récupérer sous forme de Set<String> plutôt que d'un tableau
+        List<String> telephones = employee.getTelephonesWithCountryCode();
+        for (String phone : telephones) {
+            String cleanedPhoneNumber = phone.replaceAll("[^\\d]", "");
+            if (cleanedPhoneNumber.length() != 10) {
+                // If the phone number is not 10 digits long, add an error message to the model
+                model.put("error", "Les numéros de téléphone doivent avoir exactement 10 chiffres (sans le code pays).");
+                return "addEmployee"; // Return to the addEmployee page to display the error message
+            }
+        }
 
         // Gérer le fichier image envoyé par l'utilisateur
         if (!imageFile.isEmpty()) {

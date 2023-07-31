@@ -21,7 +21,9 @@
                     <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=nom|}">Nom</a></th>
                     <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=prenoms|}">Prénoms</a></th>
                     <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=dateNaissance|}">Date de naissance</a></th>
+                    <th>Téléphones</th>
                     <th>Actions</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -29,6 +31,12 @@
                     <td th:text="${employee.nom}"></td>
                     <td th:text="${employee.prenoms}"></td>
                     <td th:text="${employee.dateNaissance}"></td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <!-- Utiliser telephonesWithCountryCode au lieu de telephones -->
+                            <li th:each="phone : ${employee.telephonesWithCountryCode}" th:text="${phone}" class="lead"></li>
+                        </ul>
+                    </td>
 
 
                     <td>
