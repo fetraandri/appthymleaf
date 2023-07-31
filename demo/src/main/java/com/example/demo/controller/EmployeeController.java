@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -114,14 +112,25 @@ public class EmployeeController {
     ) {
 
         List<String> telephones = employee.getTelephonesWithCountryCode();
+        Set<String> phoneSet = new HashSet<>();
         for (String phone : telephones) {
             String cleanedPhoneNumber = phone.replaceAll("[^\\d]", "");
-            if (cleanedPhoneNumber.length() != 10) {
-                // If the phone number is not 10 digits long, add an error message to the model
+            if (cleanedPhoneNumber.length() <= 10) {
                 model.put("error", "Les numéros de téléphone doivent avoir exactement 10 chiffres (sans le code pays).");
-                return "addEmployee"; // Return to the addEmployee page to display the error message
+                return "addEmployee";
             }
+
+            // Extract the country code from the first phone number
+            String cleanedCountryCode = cleanedPhoneNumber.substring(0, cleanedPhoneNumber.length() - 10);
+            if (!cleanedCountryCode.startsWith("+") && cleanedCountryCode.length() < 2) {
+                model.put("error", "Le code pays doit commencer par un signe plus (+) et contenir au moins deux chiffres.");
+                return "addEmployee";
+            }
+
+            // Ensure all phone numbers have the same country code
+
         }
+
 
         // Gérer le fichier image envoyé par l'utilisateur
         if (!imageFile.isEmpty()) {
