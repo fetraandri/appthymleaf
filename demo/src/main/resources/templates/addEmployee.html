@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Ajouter un employé</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
 <div class="container mt-5">
@@ -48,6 +49,7 @@
                 <input type="text" th:field="*{telephones[1]}" class="form-control">
                 <!-- Ajoutez autant de champs "phoneNumbers" que nécessaire en utilisant les index 0, 1, 2, ... -->
             </div>
+
 
             <div class="form-group">
                 <label for="adresse">Adresse:</label>
@@ -114,7 +116,7 @@
                 <input type="file" class="form-control-file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />
             </div>
 
-            <button type="submit" class="btn btn-primary">Ajouter</button>
+            <button type="submit" class="btn btn-dark">Ajouter</button>
         </form>
     </div>
 </div>
@@ -122,5 +124,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

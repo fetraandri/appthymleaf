@@ -3,42 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des employés</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/employees.css}"/>
-    <a href="http://localhost:8080/addEmployee">Ajout d'employe</a>
-
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add your custom CSS file if needed -->
 </head>
 <body>
-<h1>Liste des employés</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Liste des employés</h1>
 
-<table>
-    <tr>
-        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=nom|}">Nom</a></th>
-        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=prenoms|}">Prénoms</a></th>
-        <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=dateNaissance|}">Date de naissance</a></th>
-        <th>Actions</th>
-    </tr>
-    <tr th:each="employee : ${employees}">
-        <td th:text="${employee.nom}"></td>
-        <td th:text="${employee.prenoms}"></td>
-        <td th:text="${employee.dateNaissance}"></td>
-        <td>
-            <a th:href="@{'/employee/' + ${employee.id}}" class="employee-link">Détails</a>
-        </td>
-    </tr>
-</table>
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Table -->
+            <a href="http://localhost:8080/addEmployee" class="btn btn-primary mb-2">Ajout d'employé</a>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=nom|}">Nom</a></th>
+                    <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=prenoms|}">Prénoms</a></th>
+                    <th><a th:href="@{|/employees?sortOrder=${sortOrder == 'asc' ? 'desc' : 'asc'}&sortBy=dateNaissance|}">Date de naissance</a></th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.nom}"></td>
+                    <td th:text="${employee.prenoms}"></td>
+                    <td th:text="${employee.dateNaissance}"></td>
 
-<form th:action="@{/employees}" method="get">
-    <label>Nom: <input type="text" name="nom" th:value="${nom}" /></label>
-    <label>Prénom: <input type="text" name="prenoms" th:value="${prenoms}" /></label>
-    <label>Sexe: <input type="text" name="sexe" th:value="${sexe}" /></label>
-    <label>Fonction: <input type="text" name="fonction" th:value="${fonction}" /></label>
-    <label>Date d'embauche (début): <input type="date" name="dateEmbaucheStart" th:value="${dateEmbaucheStart}" /></label>
-    <label>Date d'embauche (fin): <input type="date" name="dateEmbaucheEnd" th:value="${dateEmbaucheEnd}" /></label>
-    <label>Date de départ (début): <input type="date" name="dateDepartStart" th:value="${dateDepartStart}" /></label>
-    <label>Date de départ (fin): <input type="date" name="dateDepartEnd" th:value="${dateDepartEnd}" /></label>
-    <input type="submit" value="Filtrer" />
 
-    <a th:href="@{/employees/export/csv}" class="export-link">Exporter au format CSV</a>
-</form>
+                    <td>
+                        <a th:href="@{'/employee/' + ${employee.id}}" class="btn btn-info btn-sm">Détails</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <a th:href="@{/employees/export/csv}" class="btn btn-dark">Exporter au format CSV</a>
+        </div>
+        <div class="col-md-4">
+            <!-- Filter fields -->
+            <form th:action="@{/employees}" method="get" class="mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Nom:</label>
+                        <input type="text" name="nom" class="form-control" th:value="${nom}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Prénom:</label>
+                        <input type="text" name="prenoms" class="form-control" th:value="${prenoms}" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label>Sexe:</label>
+                        <input type="text" name="sexe" class="form-control" th:value="${sexe}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fonction:</label>
+                        <input type="text" name="fonction" class="form-control" th:value="${fonction}" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label>Date d'embauche (début):</label>
+                        <input type="date" name="dateEmbaucheStart" class="form-control" th:value="${dateEmbaucheStart}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Date d'embauche (fin):</label>
+                        <input type="date" name="dateEmbaucheEnd" class="form-control" th:value="${dateEmbaucheEnd}" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label>Date de départ (début):</label>
+                        <input type="date" name="dateDepartStart" class="form-control" th:value="${dateDepartStart}" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>Date de départ (fin):</label>
+                        <input type="date" name="dateDepartEnd" class="form-control" th:value="${dateDepartEnd}" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <input type="submit" value="Filtrer" class="btn btn-dark mt-4" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and jQuery (needed for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

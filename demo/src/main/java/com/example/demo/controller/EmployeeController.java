@@ -107,6 +107,9 @@ public class EmployeeController {
             @RequestParam("imageFile") MultipartFile imageFile
     ) {
 
+// Maintenant, vous pouvez diviser les numéros de téléphone en utilisant la méthode split sur la chaîne
+
+// Ou, si vous voulez les récupérer sous forme de Set<String> plutôt que d'un tableau
 
         // Gérer le fichier image envoyé par l'utilisateur
         if (!imageFile.isEmpty()) {
@@ -126,6 +129,7 @@ public class EmployeeController {
                 // Vous pouvez également retourner un message d'erreur à l'utilisateur ici
             }
         }
+
 
         // Sauvegarder l'employé dans la base de données
         employeeService.addEmployee(employee);
