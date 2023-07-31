@@ -30,8 +30,10 @@
   </div>
 
   <p>Sexe: <span th:text="${employee.sexe}"></span></p>
-  <p>Téléphones: <span th:text="${employee.telephones}"></span></p>
-  <p>Adresse: <span th:text="${employee.adresse}"></span></p>
+  <p class="lead">Téléphones:</p>
+  <ul class="list-unstyled">
+    <li th:each="telephones : ${employee.telephones}" th:text="${telephones}" class="lead"></li>
+  </ul>  <p>Adresse: <span th:text="${employee.adresse}"></span></p>
   <p>Email personnel: <span th:text="${employee.emailPerso}"></span></p>
   <p>Email professionnel: <span th:text="${employee.emailPro}"></span></p>
   <p>Numéro CIN: <span th:text="${employee.cinNumero}"></span></p>
@@ -43,8 +45,6 @@
   <p>Date de départ: <span th:text="${employee.dateDepart}"></span></p>
   <p>Catégorie socio-professionnelle: <span th:text="${employee.categorieSocioProfessionnelle}"></span></p>
   <p>Numéro CNAPS: <span th:text="${employee.numeroCnaps}"></span></p>
-
-  <!-- ... (autres éléments inchangés) ... -->
 
 
 

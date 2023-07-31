@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 
 public class CompanyDetails {
     @Id
@@ -24,5 +28,11 @@ public class CompanyDetails {
     private String nif;
     private String stat;
     private String rcs;
-    private byte[] logo;
+    private String logo ;
+
+    @Lob
+    private byte[] logoData;
+
+    @Column(columnDefinition = "text")
+    private String logoFileName;
 }

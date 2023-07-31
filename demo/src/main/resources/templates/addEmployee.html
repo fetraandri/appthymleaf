@@ -43,9 +43,10 @@
             </div>
 
             <div class="form-group">
-                <label for="telephones">Téléphones:</label>
-                <input type="text" class="form-control" id="telephones" th:field="*{telephones}" required/>
-                <small class="form-text text-muted">(Séparez les numéros de téléphone par une virgule ',')</small>
+                <label>Téléphones:</label>
+                <input type="text" th:field="*{telephones[0]}" required class="form-control">
+                <input type="text" th:field="*{telephones[1]}" class="form-control">
+                <!-- Ajoutez autant de champs "phoneNumbers" que nécessaire en utilisant les index 0, 1, 2, ... -->
             </div>
 
             <div class="form-group">

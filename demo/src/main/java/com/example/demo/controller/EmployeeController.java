@@ -99,13 +99,13 @@ public class EmployeeController {
     }
 
 
+
     @PostMapping("/addEmployee")
     public String addEmployee(
 
             @ModelAttribute("newEmployee") Employee employee,
             @RequestParam("imageFile") MultipartFile imageFile
     ) {
-        String[] phoneNumbers = employee.getTelephones().split(",");
 
 
         // Gérer le fichier image envoyé par l'utilisateur
@@ -264,7 +264,7 @@ public class EmployeeController {
                 );
             }
 
-            // Flush the writer to ensure all data is written to the response
+
             response.getWriter().flush();
         } catch (IOException e) {
             e.printStackTrace();

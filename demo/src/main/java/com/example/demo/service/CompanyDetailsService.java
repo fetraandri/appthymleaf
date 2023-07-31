@@ -12,9 +12,14 @@ public class CompanyDetailsService {
     private CompanyDetailsRepository companyDetailsRepository;
 
     public CompanyDetails getCompanyDetails() {
-        // Récupérer les informations de l'entreprise à partir du repository
-        // Utilisez l'ID 1 car nous avons créé une seule entrée pour les informations de l'entreprise dans la table.
         return companyDetailsRepository.findById(1L).orElse(null);
+    }
+
+    public void saveCompanyDetails(CompanyDetails companyDetails) {
+        // Vous pouvez ajouter des validations ici si nécessaire avant de sauvegarder les informations
+        // Pour cet exemple, nous allons simplement sauvegarder les informations sans validation
+        companyDetails.setId(1L); // Assurez-vous que l'ID est fixe pour la seule entrée d'entreprise
+        companyDetailsRepository.save(companyDetails);
     }
 }
 

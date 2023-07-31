@@ -4,6 +4,7 @@
         import lombok.*;
 
         import java.time.LocalDate;
+        import java.util.List;
 
         @AllArgsConstructor
         @NoArgsConstructor
@@ -45,7 +46,7 @@
                 @Lob
                 private byte[] imageData;
 
-                private String telephones ;
+                private List<String> telephones;
 
 
 
