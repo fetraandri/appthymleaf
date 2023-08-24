@@ -3,11 +3,15 @@ package com.example.demo.controller;
 import ch.qos.logback.core.model.Model;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import com.example.demo.util.PDFGenerator;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,10 +19,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.TemplateEngine;
+
+import org.thymeleaf.context.Context;
 
 
-
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -27,10 +38,12 @@ import java.util.*;
 public class EmployeeController {
 
     private EmployeeService employeeService;
+    private final TemplateEngine templateEngine ;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService , TemplateEngine templateEngine) {
         this.employeeService = employeeService;
+        this.templateEngine = templateEngine;
     }
 
     @GetMapping("/filtered-employees")
@@ -92,15 +105,11 @@ public class EmployeeController {
         return "employees";
     }
 
-
-
     @GetMapping("/addEmployee")
     public String showAddEmployeeForm(Map<String, Object> model) {
         model.put("newEmployee", new Employee());
         return "addEmployee";
     }
-
-
 
     @PostMapping("/addEmployee")
     public String addEmployee(
@@ -116,23 +125,22 @@ public class EmployeeController {
         for (String phone : telephones) {
             String cleanedPhoneNumber = phone.replaceAll("[^\\d]", "");
             if (cleanedPhoneNumber.length() <= 10) {
-                model.put("error", "Les numéros de téléphone doivent avoir exactement 10 chiffres (sans le code pays).");
-                return "addEmployee";
+                model.put("error", "Les numéros de téléphone doivent avoir plus de 10 chiffres (incluant le code pays).");
+
             }
 
             // Extract the country code from the first phone number
             String cleanedCountryCode = cleanedPhoneNumber.substring(0, cleanedPhoneNumber.length() - 10);
-            if (!cleanedCountryCode.startsWith("+") && cleanedCountryCode.length() < 2) {
+            if (!cleanedCountryCode.startsWith("+") && cleanedCountryCode.length() >= 2) {
                 model.put("error", "Le code pays doit commencer par un signe plus (+) et contenir au moins deux chiffres.");
-                return "addEmployee";
+
             }
 
-            // Ensure all phone numbers have the same country code
 
+            phoneSet.add(cleanedPhoneNumber);
         }
 
 
-        // Gérer le fichier image envoyé par l'utilisateur
         if (!imageFile.isEmpty()) {
             try {
                 // Récupérer le nom du fichier d'image et le stocker dans l'objet Employee
@@ -177,7 +185,6 @@ public class EmployeeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // ...
 
     @PostMapping("/updateEmployee")
     public String updateEmployee(@ModelAttribute("employee") Employee updatedEmployee,
@@ -289,12 +296,47 @@ public class EmployeeController {
                 );
             }
 
-
             response.getWriter().flush();
         } catch (IOException e) {
             e.printStackTrace();
             // Gérer les erreurs d'exportation CSV si nécessaire
         }
     }
+
+
+    @GetMapping("/employee/{id}/pdf")
+    public ResponseEntity<byte[]> generateEmployeePDF(@PathVariable Long id) {
+        try {
+            Employee employee = employeeService.getEmployeeById(id);
+            if (employee != null) {
+                // Charger le modèle HTML de la fiche d'employé depuis le fichier
+                String templateName = "employee-details"; // Without the .html extension
+                Context context = new Context();
+                context.setVariable("employee", employee);
+                String htmlContent = templateEngine.process(templateName, context);
+
+                // Remplacer les placeholders dans le HTML avec les données de l'employé
+                htmlContent = htmlContent.replace("[[nom]]", employee.getNom());
+                htmlContent = htmlContent.replace("[[prenom]]", employee.getPrenoms());
+                htmlContent = htmlContent.replace("[[dateNaissance]]", employee.getDateNaissance().toString());
+
+                ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
+                PDFGenerator.generatePDF(htmlContent, pdfOutputStream);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.setContentDispositionFormData("attachment", "employee.pdf");
+
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(pdfOutputStream.toByteArray());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 
 }

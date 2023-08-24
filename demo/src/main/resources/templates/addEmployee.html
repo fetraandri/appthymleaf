@@ -47,9 +47,10 @@
 
             <div class="form-group">
                 <label>Téléphones :</label>
-                <input type="text" th:field="*{telephonesWithCountryCode[0]}" required class="form-control" pattern="^\+[0-9]{2,}\s[0-9]{10}$" title="Le téléphone doit commencer par le code pays unique suivi d'un espace, suivi de 10 chiffres."/>
-                <input type="text" th:field="*{telephonesWithCountryCode[1]}" class="form-control" pattern="^\+[0-9]{2,}\s[0-9]{10}$" title="Le téléphone doit commencer par le code pays unique suivi d'un espace, suivi de 10 chiffres."/>
+                <input type="text" th:field="*{telephonesWithCountryCode[0]}" required class="form-control"  title="Le téléphone doit commencer par le code pays unique suivi d'un espace, suivi de 10 chiffres."/>
+                <input type="text" th:field="*{telephonesWithCountryCode[1]}" class="form-control"  title="Le téléphone doit commencer par le code pays unique suivi d'un espace, suivi de 10 chiffres."/>
             </div>
+
 
 
             <div class="container mt-5">
