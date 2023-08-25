@@ -30,6 +30,7 @@ dependencies {
 	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.2'
 	implementation group: 'com.itextpdf', name: 'itext7-core', version: '7.1.16'
 	implementation group: 'com.itextpdf', name: 'html2pdf', version: '3.0.2'
+	implementation 'org.xhtmlrenderer:flying-saucer-pdf:9.1.22'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'

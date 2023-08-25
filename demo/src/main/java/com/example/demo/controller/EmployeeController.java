@@ -11,6 +11,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.TemplateEngine;
 
 import org.thymeleaf.context.Context;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +38,16 @@ import java.util.*;
 
 @Controller
 public class EmployeeController {
+
+
+
+    @ModelAttribute("imageDataUrl")
+    public String imageDataUrl(Employee employee) {
+        if (employee != null && employee.getImageData() != null) {
+            return "data:image/png;base64," + Base64.getEncoder().encodeToString(employee.getImageData());
+        }
+        return null;
+    }
 
     private EmployeeService employeeService;
     private final TemplateEngine templateEngine ;
@@ -304,24 +316,28 @@ public class EmployeeController {
     }
 
 
+
     @GetMapping("/employee/{id}/pdf")
     public ResponseEntity<byte[]> generateEmployeePDF(@PathVariable Long id) {
         try {
             Employee employee = employeeService.getEmployeeById(id);
             if (employee != null) {
-                // Charger le modèle HTML de la fiche d'employé depuis le fichier
-                String templateName = "employee-details"; // Without the .html extension
+                String templateName = "employee-details"; // Nom du fichier HTML sans l'extension .html
                 Context context = new Context();
                 context.setVariable("employee", employee);
+                context.setVariable("baseUrl", "http://localhost:8080"); // Remplacez par votre URL de base
+
                 String htmlContent = templateEngine.process(templateName, context);
 
-                // Remplacer les placeholders dans le HTML avec les données de l'employé
-                htmlContent = htmlContent.replace("[[nom]]", employee.getNom());
-                htmlContent = htmlContent.replace("[[prenom]]", employee.getPrenoms());
-                htmlContent = htmlContent.replace("[[dateNaissance]]", employee.getDateNaissance().toString());
-
                 ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
-                PDFGenerator.generatePDF(htmlContent, pdfOutputStream);
+
+                // Create an ITextRenderer instance
+                ITextRenderer renderer = new ITextRenderer();
+                renderer.setDocumentFromString(htmlContent);
+
+                // Generate PDF into the output stream
+                renderer.layout();
+                renderer.createPDF(pdfOutputStream);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_PDF);
@@ -337,6 +353,7 @@ public class EmployeeController {
 
         return ResponseEntity.notFound().build();
     }
+
 
 
 }
