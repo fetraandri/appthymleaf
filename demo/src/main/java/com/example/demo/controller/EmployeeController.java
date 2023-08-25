@@ -7,6 +7,7 @@ import com.example.demo.util.PDFGenerator;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -26,10 +27,7 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -331,11 +329,14 @@ public class EmployeeController {
 
                 ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
 
-                // Create an ITextRenderer instance
+                // Redimensionner l'image en carré de 4x4 pixels
+                byte[] resizedImageData = resizeImage(employee.getImageData(), 200, 200);
+
+                // Créer une instance ITextRenderer
                 ITextRenderer renderer = new ITextRenderer();
                 renderer.setDocumentFromString(htmlContent);
 
-                // Generate PDF into the output stream
+                // Générer le PDF dans le flux de sortie
                 renderer.layout();
                 renderer.createPDF(pdfOutputStream);
 
@@ -354,6 +355,16 @@ public class EmployeeController {
         return ResponseEntity.notFound().build();
     }
 
+    // Méthode pour redimensionner l'image en carré
+    private byte[] resizeImage(byte[] imageData, int targetWidth, int targetHeight) throws IOException {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+        Thumbnails.of(inputStream)
+                .size(targetWidth, targetHeight)
+                .outputFormat("jpeg") // Vous pouvez également utiliser "png"
+                .toOutputStream(outputStream);
 
+        return outputStream.toByteArray();
+    }
 }

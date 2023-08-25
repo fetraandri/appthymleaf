@@ -1,0 +1,38 @@
+/* Styles spécifiques pour le PDF */
+@media print {
+    /* Utiliser un peu plus d'espace entre les colonnes pour une meilleure lisibilité */
+    .employee-details {
+        display: flex;
+        margin: 20px;
+    }
+
+    /* Utiliser des pourcentages pour le dimensionnement des colonnes pour s'adapter à l'espace disponible */
+    .image-column {
+        flex: 20%;
+        margin-right: 20px;
+    }
+
+    .details-column {
+        flex: 80%;
+    }
+
+    /* Encadré pour l'image */
+    .employee-image {
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* Redimensionner l'image pour s'adapter au cadre */
+    .employee-image img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    /* Ajoutez d'autres styles spécifiques pour le PDF ici */
+    /* Par exemple, styles pour les détails, espacement, typographie, etc. */
+}
