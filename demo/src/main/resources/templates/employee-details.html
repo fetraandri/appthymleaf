@@ -1,44 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"></meta>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-
-    <!-- Inclure Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></link>
-    <link rel="stylesheet" type="text/css" href="E:\Devoir\appthymleaf\demo\src\main\resources\static\css\pdfStyles.css"/>
-
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <title>Employee Details</title>
+    <style>
+        .employee-image img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <div class="text-center mb-3">
-                <div class="employee-image">
-                    <img th:if="${employee.imageData}" th:src="@{${baseUrl} + '/employeeImage/' + ${employee.id}}" alt="Photo d'identité" class="img-fluid rounded-circle"></img>
-                    <span th:unless="${employee.imageData}">Aucune image</span>
-                </div>
+        <div class="col-md-4">
+            <div class="employee-image">
+                <img th:if="${employee.imageData}"
+                     th:src="@{${baseUrl} + '/employeeImage/' + ${employee.id}}"
+                     alt="Photo d'identité"
+                     class="img-fluid rounded-circle">
+                <span th:unless="${employee.imageData}">Aucune image</span></img>
             </div>
         </div>
-        <div class="col-md-6">
-            <h1>Employee Details</h1>
-            <p><strong>ID:</strong> [[${employee.id}]]</p>
-            <p><strong>Nom:</strong> [[${employee.nom}]]</p>
-            <p><strong>Prénoms:</strong> [[${employee.prenoms}]]</p>
-            <p><strong>Âge:</strong> [[${employee.dateNaissance.until(T(java.time.LocalDate).now()).getYears()}]] ans</p>
-            <p><strong>Date d'embauche:</strong> [[${employee.dateEmbauche}]]</p>
-            <p><strong>Date de départ:</strong> [[${employee.dateDepart}]]</p>
-            <p><strong>Numéro CNAPS:</strong> [[${employee.numeroCnaps}]]</p>
-            <!-- Ajoutez d'autres champs d'employé ici -->
+        <div class="col-md-8">
+            <div class="employee-details">
+                <h1>Employee Details</h1>
+                <p><strong>ID:</strong> [[${employee.id}]]</p>
+                <p><strong>Nom:</strong> [[${employee.nom}]]</p>
+                <p><strong>Prénoms:</strong> [[${employee.prenoms}]]</p>
+                <p><strong>Âge:</strong> [[${employee.dateNaissance.until(T(java.time.LocalDate).now()).getYears()}]] ans</p>
+                <p><strong>Date d'embauche:</strong> [[${employee.dateEmbauche}]]</p>
+                <p><strong>Date de départ:</strong> [[${employee.dateDepart}]]</p>
+                <p><strong>Numéro CNAPS:</strong> [[${employee.numeroCnaps}]]</p>
+                <!-- Ajoutez d'autres champs d'employé ici -->
+            </div>
         </div>
     </div>
 </div>
-
-<!-- Inclure les scripts Bootstrap JS si nécessaire -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
