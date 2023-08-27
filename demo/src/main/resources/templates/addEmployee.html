@@ -127,6 +127,12 @@
                 <input type="file" class="form-control-file" id="imageFile" name="imageFile" required accept=".jpg,.png,.jpeg" />
             </div>
 
+            <div class="form-group">
+                <label for="salaireBrut">Salaire brut:</label>
+                <input type="number" class="form-control" id="salaireBrut" th:field="*{salaireBrut}" required/>
+            </div>
+
+
             <button type="submit" class="btn btn-dark">Ajouter</button>
         </form>
     </div>

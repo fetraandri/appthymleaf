@@ -48,6 +48,10 @@
 
                 private List<String> telephones; // Liste des numéros de téléphone sans le code pays
                 private List<String> telephonesWithCountryCode;
+                // ...
+                private double salaireBrut;
+// ...
+
 
 
 

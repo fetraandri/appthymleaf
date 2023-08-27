@@ -13,22 +13,37 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .flex-container {
+              display: flex; /* pdfHTML does not support inline-flex yet*/
+              flex-direction: row; /* items must be placed in a row */
+              width: 100%;
+              justify-content: flex-end;
+}
+
+        .flex-column-item{
+              flex-grow: 0;
+              flex-shrink: 0;
+              flex-basis: 40%;
+}
+         .bordered{
+                border: 1px dotted lightgray;
+                padding: 10px;
+                box-sizing: border-box;
+             }
+
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="employee-image">
+<div class="flex-container">
+            <div class="employee-image bordered flex-column-item">
                 <img th:if="${employee.imageData}"
                      th:src="@{${baseUrl} + '/employeeImage/' + ${employee.id}}"
                      alt="Photo d'identité"
                      class="img-fluid rounded-circle">
                 <span th:unless="${employee.imageData}">Aucune image</span></img>
             </div>
-        </div>
-        <div class="col-md-8">
-            <div class="employee-details">
+
+            <div class="employee-details bordered flex-column-item">
                 <h1>Employee Details</h1>
                 <p><strong>ID:</strong> [[${employee.id}]]</p>
                 <p><strong>Nom:</strong> [[${employee.nom}]]</p>
@@ -37,10 +52,9 @@
                 <p><strong>Date d'embauche:</strong> [[${employee.dateEmbauche}]]</p>
                 <p><strong>Date de départ:</strong> [[${employee.dateDepart}]]</p>
                 <p><strong>Numéro CNAPS:</strong> [[${employee.numeroCnaps}]]</p>
-                <!-- Ajoutez d'autres champs d'employé ici -->
             </div>
-        </div>
-    </div>
 </div>
+<p><strong>Salaire brute actuel:</strong> [[${employee.salaireBrut}]] Ariary/mois</p>
+
 </body>
 </html>
