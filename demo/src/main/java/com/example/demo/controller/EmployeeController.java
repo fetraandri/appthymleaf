@@ -31,6 +31,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 
@@ -320,10 +321,18 @@ public class EmployeeController {
         try {
             Employee employee = employeeService.getEmployeeById(id);
             if (employee != null) {
-                String templateName = "employee-details"; // Nom du fichier HTML sans l'extension .html
+                // Calculer l'âge de l'employé en années
+                LocalDate currentDate = LocalDate.now();
+                LocalDate birthday = employee.getDateNaissance();
+                int age = Period.between(birthday, currentDate).getYears();
+
+                String templateName = "employee-details";
+
+
                 Context context = new Context();
                 context.setVariable("employee", employee);
-                context.setVariable("baseUrl", "http://localhost:8080"); // Remplacez par votre URL de base
+                context.setVariable("age", age);
+                context.setVariable("baseUrl", "http://localhost:8080"); // url de base
 
                 String htmlContent = templateEngine.process(templateName, context);
 
@@ -362,7 +371,7 @@ public class EmployeeController {
 
         Thumbnails.of(inputStream)
                 .size(targetWidth, targetHeight)
-                .outputFormat("jpeg") // Vous pouvez également utiliser "png"
+                .outputFormat("jpeg")
                 .toOutputStream(outputStream);
 
         return outputStream.toByteArray();
